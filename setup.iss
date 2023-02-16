@@ -1,14 +1,14 @@
-#define MyAppName "Standalone HTTP Service"
+#define MyAppName "ID Card Reader Thales"
 #define MyAppVersion "1.0.0"
-#define MyAppPublisher "Hieu Nguyen"
-#define MyAppURL "https://github.com/alfrededison"
-#define MyAppExeName "setup-windows-http-service"
+#define MyAppPublisher "Newlogic"
+#define MyAppURL "http://www.newlogic.com/"
+#define MyAppExeName "setup-id-card-reader-thales"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{A24AA61F-11EF-460B-8E34-C3525FC65746}
+AppId={{6880BC32-C400-4663-AE06-A6A6B9C093F5}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
@@ -52,11 +52,11 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Source: "publish\net6.0\win10-x64\appsettings.Development.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "publish\net6.0\win10-x64\appsettings.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "publish\net6.0\win10-x64\aspnetcorev2_inprocess.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "publish\net6.0\win10-x64\Windows HTTP Service.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "publish\net6.0\win10-x64\Windows HTTP Service.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "publish\net6.0\win10-x64\ID Card Reader Thales.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "publish\net6.0\win10-x64\ID Card Reader Thales.pdb"; DestDir: "{app}"; Flags: ignoreversion
 
 [Run]
-Filename: "{sys}\sc.exe"; Parameters: "create ""{#MyAppName}"" binpath= ""{app}\Windows HTTP Service.exe"" start= auto"; Flags: runhidden;
+Filename: "{sys}\sc.exe"; Parameters: "create ""{#MyAppName}"" binpath= ""{app}\ID Card Reader Thales.exe"" start= auto"; Flags: runhidden;
 Filename: "{sys}\sc.exe"; Parameters: "start ""{#MyAppName}"""; Flags: runhidden;
 
 [UninstallRun]

@@ -8,7 +8,7 @@
 		<Platforms>x64</Platforms>
 		<PlatformTarget>x64</PlatformTarget>
 		<PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
-		<RootNamespace>Windows_HTTP_Service</RootNamespace>
+		<RootNamespace>ID_Card_Reader_Thales</RootNamespace>
 		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
 		<TargetFramework>net6.0</TargetFramework>
 	</PropertyGroup>

@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Windows_HTTP_Service": {
+    "ID_Card_Reader_Thales": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
