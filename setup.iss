@@ -56,7 +56,7 @@ Source: "publish\net6.0\win10-x64\ID Card Reader Thales.exe"; DestDir: "{app}"; 
 Source: "publish\net6.0\win10-x64\ID Card Reader Thales.pdb"; DestDir: "{app}"; Flags: ignoreversion
 
 [Run]
-Filename: "{sys}\sc.exe"; Parameters: "create ""{#MyAppName}"" binpath= ""{app}\ID Card Reader Thales.exe"" start= auto"; Flags: runhidden;
+Filename: "{sys}\sc.exe"; Parameters: "create ""{#MyAppName}"" binpath= ""{app}\ID Card Reader Thales.exe --urls http://localhost:12212"" start= auto"; Flags: runhidden;
 Filename: "{sys}\sc.exe"; Parameters: "start ""{#MyAppName}"""; Flags: runhidden;
 
 [UninstallRun]
