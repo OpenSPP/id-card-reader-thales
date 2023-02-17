@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+const Http = new XMLHttpRequest();
+const url='http://localhost:12212/';
+
+
+function httpCall(suffix = '') {
+  Http.open("GET", url + suffix);
+  Http.send();
+
+  Http.onreadystatechange = (e) => {
+    console.log(Http.responseText)
+  }
+}
+
+</script>
+
+
+
+<h1>test http service call</h1>
+
+<button type="button" onclick="httpCall('initialise')">initialise</button>
+<button type="button" onclick="httpCall('readdocument')">scan</button>
+<button type="button" onclick="httpCall('qrcode')">qrcode</button>
+<button type="button" onclick="httpCall('shutdown')">shutdown</button>
+
+</body>
+</html>
