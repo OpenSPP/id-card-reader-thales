@@ -13,3 +13,6 @@
     ```
 
 Installer can be found in `Output` folder.
+
+### Notes:
+Use the inno 5.6.1 instead of innosetup 6.2.1 because currently, 6.2.1 create an installer that is detected as a virus by Windows
