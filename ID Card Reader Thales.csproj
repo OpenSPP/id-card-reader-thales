@@ -25,11 +25,4 @@
 		</Reference>
 	</ItemGroup>
 
-	<!--<ItemGroup>
-		<ContentWithTargetPath
-		   Include="SDK\*.lib"
-		   CopyToOutputDirectory="PreserveNewest"
-		   TargetPath="%(Filename)%(Extension)" />
-	</ItemGroup>-->
-
 </Project>
