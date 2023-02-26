@@ -49,8 +49,10 @@ namespace IdCardReaderThales
                 MMM.Readers.ErrorCode lErrorCode =
                     MMM.Readers.FullPage.Reader.GetSettings(out lSettings);
                 lSettings.puDataToSend.send |= MMM.Readers.FullPage.DataSendSet.Flags.SMARTCARD;
+                lSettings.puDataToSend.send |= MMM.Readers.FullPage.DataSendSet.Flags.VISIBLEIMAGE;
                 lSettings.puRFIDSettings.puRFProcessSettings.puRFApplicationMode = 1;
                 lSettings.puDataToSend.rfid.puDGFile[11] = 1;
+                lSettings.puDataToSend.rfid.puDG2FaceJPEG = 1;
                 MMM.Readers.FullPage.Reader.UpdateSettings(lSettings);
 
                 MMM.Readers.ErrorCode result = MMM.Readers.FullPage.Reader.ReadDocument();
@@ -62,7 +64,7 @@ namespace IdCardReaderThales
                 {
                     // All data is passed back as an object, which should be cast to the
                     // correct type to be used
-                    object data = null;
+                    object? data = null;
 
                     result = MMM.Readers.FullPage.Reader.GetData(
                         MMM.Readers.FullPage.DataType.CD_CODELINE_DATA,
@@ -100,7 +102,7 @@ namespace IdCardReaderThales
                     );
                     if (result == MMM.Readers.ErrorCode.NO_ERROR_OCCURRED)
                     {
-                        byte[] lFileData = data as byte[];
+                        byte[]? lFileData = data as byte[];
 
                         //parse the data 
 
@@ -122,7 +124,7 @@ namespace IdCardReaderThales
 
                                 if (tlv2.HexTag == "5F0E")
                                 {
-                                    info["name"] = value;
+                                    info["name"] = value.Replace("<"," ");
                                     String[] separator = { "<<" };
                                     String[] strlist = value.Split(separator, StringSplitOptions.RemoveEmptyEntries);
                                     
@@ -130,14 +132,14 @@ namespace IdCardReaderThales
                                     {
                                         String[] sep2 = { "<" };
                                         String[] str2list = strlist[0].Split(sep2, StringSplitOptions.RemoveEmptyEntries);
-                                        info["grand_father_name"] = str2list[2];
-                                        info["father_name"] = str2list[1];
-                                        info["family_name"] = strlist[1];
-                                        info["given_name"] = str2list[0];
+                                        info["grand_father_name"] = str2list[2].Replace("<", " "); ;
+                                        info["father_name"] = str2list[1].Replace("<", " "); ;
+                                        info["family_name"] = strlist[1].Replace("<", " "); ;
+                                        info["given_name"] = str2list[0].Replace("<", " "); ;
                                     } else
                                     {
-                                        info["given_name"] = strlist[1];
-                                        info["family_name"] = strlist[0];
+                                        info["given_name"] = strlist[1].Replace("<", " "); ;
+                                        info["family_name"] = strlist[0].Replace("<", " "); ;
                                     }
                                     
 
@@ -179,12 +181,15 @@ namespace IdCardReaderThales
 
                     if (result == MMM.Readers.ErrorCode.NO_ERROR_OCCURRED)
                     {
-                        Bitmap bImage = data as Bitmap;
-                        System.IO.MemoryStream ms = new MemoryStream();
-                        bImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                        byte[] byteImage = ms.ToArray();
-                        string base64String = Convert.ToBase64String(byteImage);
-                        info["image"] = base64String;
+                        Bitmap? bImage = data as Bitmap;
+                        if ((bImage != null) && (OperatingSystem.IsWindows()))
+                        {
+                            System.IO.MemoryStream ms = new MemoryStream();
+                            bImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                            byte[] byteImage = ms.ToArray();
+                            string base64String = Convert.ToBase64String(byteImage);
+                            info["image"] = base64String;
+                        }
                     }
 
                     //result = MMM.Readers.FullPage.Reader.GetData(
@@ -209,13 +214,16 @@ namespace IdCardReaderThales
 
                     if (result == MMM.Readers.ErrorCode.NO_ERROR_OCCURRED)
                     {
-                        byte[] byteImage = data as byte[];
-                        byte[] OutputImage = null;
-                        MMM.Readers.Modules.Imaging.ConvertFormat
-                                                    (MMM.Readers.FullPage.ImageFormats.RTE_JPEG,
-                                                    byteImage, out OutputImage);
-                        string base64String = Convert.ToBase64String(OutputImage);
-                        info["photo"] = base64String;
+                        byte[]? byteImage = data as byte[];
+                        byte[]? OutputImage = null;
+                        if (byteImage != null)
+                        {
+                            MMM.Readers.Modules.Imaging.ConvertFormat
+                                                        (MMM.Readers.FullPage.ImageFormats.RTE_JPEG,
+                                                        byteImage, out OutputImage);
+                            string base64String = Convert.ToBase64String(OutputImage);
+                            info["photo"] = base64String;
+                        }
                     }
                 }
                 return info;
@@ -225,7 +233,7 @@ namespace IdCardReaderThales
         public Hashtable qrcode()
         {
             Hashtable info = new Hashtable();
-            object data = null;
+            object? data = null;
             MMM.Readers.FullPage.PluginData pluginData;
 
             MMM.Readers.FullPage.Reader.EnablePlugin("QRCode", true);
@@ -247,12 +255,15 @@ namespace IdCardReaderThales
 
             if (result == MMM.Readers.ErrorCode.NO_ERROR_OCCURRED)
             {
-                Bitmap bImage = data as Bitmap;
-                System.IO.MemoryStream ms = new MemoryStream();
-                bImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                byte[] byteImage = ms.ToArray();
-                string base64String = Convert.ToBase64String(byteImage);
-                //info["image"] = base64String;
+                Bitmap? bImage = data as Bitmap;
+                if ((bImage != null) && (OperatingSystem.IsWindows()))
+                {
+                    System.IO.MemoryStream ms = new MemoryStream();
+                    bImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    byte[] byteImage = ms.ToArray();
+                    string base64String = Convert.ToBase64String(byteImage);
+                    //info["image"] = base64String;
+                }
             }
 
             result = MMM.Readers.FullPage.Reader.GetPluginData(
@@ -266,13 +277,16 @@ namespace IdCardReaderThales
             {
                 if (pluginData.puDataFormat == MMM.Readers.FullPage.DataFormat.DF_STRING_ASCII)
                 {
-                    string qrcodedata = pluginData.puData.ToString();
+                    string? qrcodedata = pluginData.puData.ToString();
                     info["qrcode"] = qrcodedata;
                 }
                 else if (pluginData.puDataFormat == MMM.Readers.FullPage.DataFormat.DF_BINARYDATA)
                 {
                     byte[] qrcodedata = (byte[])pluginData.puData;
                     info["qrcode"] = qrcodedata;
+                } else
+                {
+                    info["error"] = "No QR code detected";
                 }
                 
             }
@@ -282,7 +296,7 @@ namespace IdCardReaderThales
 
         public void shutDown()
         {
-            MMM.Readers.FullPage.Reader.Shutdown();
+            MMM.Readers.FullPage.Reader.Reset();
         }
     }
 }

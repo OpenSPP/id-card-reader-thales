@@ -48,14 +48,14 @@ end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-    if CurStep = ssInstall 
-     then EnvAddPath(ExpandConstant('{app}') +'\lib');
+    if CurStep = ssInstall
+     then EnvAddPath(ExpandConstant('{app}') +'\SDK\Bin');
 end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 begin
     if CurUninstallStep = usPostUninstall
-    then EnvRemovePath(ExpandConstant('{app}') +'\lib');
+    then EnvRemovePath(ExpandConstant('{app}') +'\SDK\Bin');
 end;
 
 [Languages]
@@ -66,8 +66,9 @@ Source: "publish\net6.0\win10-x64\appsettings.Development.json"; DestDir: "{app}
 Source: "publish\net6.0\win10-x64\appsettings.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "publish\net6.0\win10-x64\aspnetcorev2_inprocess.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "publish\net6.0\win10-x64\ID Card Reader Thales.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "publish\net6.0\win10-x64\ID Card Reader Thales.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "SDK\lib\*.dll"; DestDir: "{app}\lib"; Flags: ignoreversion
+Source: "SDK\Bin\*"; DestDir: "{app}\SDK\Bin"; Flags: ignoreversion
+Source: "SDK\Config\*"; DestDir: "{app}\SDK\Config"; Flags: ignoreversion
+Source: "SDK\Plugins\*"; DestDir: "{app}\SDK\Plugins"; Flags: ignoreversion
 
 [Run]
 Filename: "{sys}\sc.exe"; Parameters: "create ""{#MyAppName}"" binpath= ""{app}\ID Card Reader Thales.exe --urls http://localhost:12212"" start= auto"; Flags: runhidden;
