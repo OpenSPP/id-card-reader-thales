@@ -10,7 +10,7 @@ namespace IdCardReaderThales
             {
                 Hashtable response = new Hashtable();
                 response["initialise"] = "true";
-                DataStore.ps.initialise();
+                DataStorage.ps.initialise();
                 return Results.Json(response);
             }
             catch (Exception e)
@@ -28,7 +28,7 @@ namespace IdCardReaderThales
             {
                 Hashtable response = new Hashtable();
                 response["shutdown"] = "true";
-                DataStore.ps.shutDown();
+                DataStorage.ps.shutDown();
                 return Results.Json(response);
             }
             catch (Exception e)
@@ -44,7 +44,7 @@ namespace IdCardReaderThales
         {
             try
             {
-                return Results.Json(DataStore.ps.readDocument());
+                return Results.Json(DataStorage.ps.readDocument());
             }
             catch (Exception e)
             {
@@ -59,7 +59,7 @@ namespace IdCardReaderThales
         {
             try
             {
-                return Results.Json(DataStore.ps.qrcode());
+                return Results.Json(DataStorage.ps.qrcode());
             }
             catch (Exception e)
             {

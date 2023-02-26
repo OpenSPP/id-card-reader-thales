@@ -1,10 +1,10 @@
 ﻿namespace IdCardReaderThales
 {
-    public static class DataStore
+    public static class DataStorage
     {
         public static PassportScanner ps;
 
-        static DataStore()
+        static DataStorage()
         {
             ps = new PassportScanner();
         }
